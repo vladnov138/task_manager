@@ -1,0 +1,1 @@
+export 'detail_text_widget.dart';
