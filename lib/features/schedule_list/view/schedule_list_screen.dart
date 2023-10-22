@@ -10,39 +10,46 @@ class ScheduleListScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text("Tasks"),
       ),
-      body: Column(
-        children: [
-          Table(
-            columnWidths: const <int, TableColumnWidth>{
-              0: FlexColumnWidth(15),
-              1: FlexColumnWidth(40),
-              2: FlexColumnWidth(5),
-            },
-            children: [
-              TableRow(children: [
-                const TableCell(
+      body: Padding(
+        padding: const EdgeInsets.only(top: 15, left: 15, right: 15),
+        child: Column(
+          children: [
+            Table(
+              columnWidths: const <int, TableColumnWidth>{
+                0: FlexColumnWidth(15),
+                1: FlexColumnWidth(80),
+                2: FlexColumnWidth(5),
+              },
+              children: [
+                TableRow(children: [
+                  const TableCell(
+                      verticalAlignment: TableCellVerticalAlignment.middle,
+                      child: DateWidget(date: "Tue, 29")),
+                  TableCell(
                     verticalAlignment: TableCellVerticalAlignment.middle,
-                    child: DateWidget(date: "Tue, 29")),
-                TableCell(
-                  verticalAlignment: TableCellVerticalAlignment.middle,
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.of(context).pushNamed('/task');
-                    },
-                    child: Expanded(
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).pushNamed('/task');
+                      },
                       child: Container(
-                          padding: EdgeInsets.symmetric(horizontal: 10),
-                          child: TaskTitleWidget()),
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: const TaskTitleWidget()),
                     ),
                   ),
-                ),
-                TableCell(
-                    verticalAlignment: TableCellVerticalAlignment.middle,
-                    child: Text("!"))
-              ])
-            ],
-          )
-        ],
+                  const TableCell(
+                      verticalAlignment: TableCellVerticalAlignment.middle,
+                      child: Text("!"))
+                ])
+              ],
+            ),
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.of(context).pushNamed('/add_task');
+        },
+        child: const Icon(Icons.add),
       ),
     );
   }

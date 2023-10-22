@@ -13,7 +13,7 @@ class TaskScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Task')),
-      body: Container(
+      body: Padding(
           padding: const EdgeInsets.all(20),
           child: Column(children: [
             Table(
@@ -30,9 +30,12 @@ class TaskScreen extends StatelessWidget {
                       style: mainTheme.textTheme.headlineSmall,
                     ),
                   ),
-                  Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      child: const TaskTitleWidget()),
+                  Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 0),
+                      child: TextFormField(
+                        initialValue: "Сходить в котокафе",
+                      ),
+                  ),
                 ]),
                 const TableRow(children: [
                   SizedBox(height: 20),
@@ -65,8 +68,8 @@ class TaskScreen extends StatelessWidget {
               onChanged: (bool? value) {},
               value: !test,
             ),
-            Container(
-              padding: EdgeInsets.only(top: 25),
+            Padding(
+              padding: const EdgeInsets.only(top: 25),
               child: MaterialButton(
                 onPressed: () {
                   Navigator.of(context).pushNamed(
