@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
+import 'package:get_it/get_it.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 import 'package:task_manager/models/task.dart';
+import 'package:task_manager/services/NotificationService.dart';
 
 import '../../../client/hive_names.dart';
 import '../../../theme/theme.dart';
@@ -175,9 +177,9 @@ class _AddingTaskScreenState extends State<AddingTaskScreen> {
 
   void _onFormSubmit() {
     Box<Task> contactsBox = Hive.box<Task>(HiveBoxes.task);
-    print(task);
-    print(details);
-    print(deadline);
+    debugPrint(task);
+    debugPrint(details);
+    debugPrint(deadline.toString());
     contactsBox.add(Task(
         task: task!,
         details: details!,
@@ -185,6 +187,7 @@ class _AddingTaskScreenState extends State<AddingTaskScreen> {
         important: important,
         complete: false,
         updated_at: DateTime.now()));
+    GetIt.I<NotificationService>().sendNotification(task!, details!, deadline!);
     Navigator.of(context).pop();
   }
 }
