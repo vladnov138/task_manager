@@ -2,12 +2,29 @@ import 'package:flutter/material.dart';
 import 'package:task_manager/features/task/task.dart';
 import 'package:task_manager/theme/theme.dart';
 
+import '../../../models/task.dart';
 import '../../schedule_list/schedule_list.dart';
 
-class TaskScreen extends StatelessWidget {
+class TaskScreen extends StatefulWidget {
   TaskScreen({super.key});
 
-  bool test = true;
+  @override
+  State<TaskScreen> createState() => _TaskScreenState();
+}
+
+class _TaskScreenState extends State<TaskScreen> {
+  @override
+  void didChangeDependencies() {
+    final args = ModalRoute.of(context)?.settings.arguments;
+    assert(args != null && args is Task, 'You must provide String args');
+    res = args as Task;
+    setState(() {
+
+    });
+    super.didChangeDependencies();
+  }
+
+  Task? res;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +50,7 @@ class TaskScreen extends StatelessWidget {
                   Padding(
                       padding: EdgeInsets.symmetric(horizontal: 0),
                       child: TextFormField(
-                        initialValue: "Сходить в котокафе",
+                        initialValue: res!.task,
                       ),
                   ),
                 ]),
@@ -47,7 +64,7 @@ class TaskScreen extends StatelessWidget {
                       "Details",
                       style: mainTheme.textTheme.headlineSmall,
                     ),
-                    const DetailTextWidget(text: "tratata")
+                    DetailTextWidget(text: res!.details)
                   ],
                 ),
                 const TableRow(children: [
@@ -57,24 +74,31 @@ class TaskScreen extends StatelessWidget {
               ],
             ),
             CheckboxListTile(
-              title: const Text("Passed"),
+              title: const Text("Completed"),
               controlAffinity: ListTileControlAffinity.leading,
-              onChanged: (bool? value) {},
-              value: test,
+              onChanged: (bool? value) {
+                setState(() {
+                  res!.complete = !res!.complete;
+                });
+              },
+              value: res!.complete,
             ),
             CheckboxListTile(
               title: const Text("Important"),
               controlAffinity: ListTileControlAffinity.leading,
-              onChanged: (bool? value) {},
-              value: !test,
+              onChanged: (bool? value) {
+                setState(() {
+                  res!.important = !res!.important;
+                });
+              },
+              value: res!.important,
             ),
             Padding(
               padding: const EdgeInsets.only(top: 25),
               child: MaterialButton(
                 onPressed: () {
-                  Navigator.of(context).pushNamed(
-                    '/task',
-                  );
+                  res!.save();
+                  Navigator.of(context).pop();
                 },
                 color: Colors.blue,
                 minWidth: 200,
