@@ -9,14 +9,25 @@ class Task extends HiveObject {
   @HiveField(1)
   String details;
   @HiveField(2)
-  DateTime deadline;
+  String category;
   @HiveField(3)
-  bool important;
+  DateTime deadline;
   @HiveField(4)
-  bool complete;
+  bool important;
   @HiveField(5)
+  bool complete;
+  @HiveField(6)
   DateTime updated_at;
+  @HiveField(7)
+  int notificationId;
 
-  Task({required this.task, required this.details, required this.deadline,
-    required this.important, required this.complete, required this.updated_at});
+  Task(
+      {required this.task,
+      required this.details,
+      required this.category,
+      required this.deadline,
+      required this.important,
+      required this.complete,
+      required this.updated_at,
+      required this.notificationId});
 }
