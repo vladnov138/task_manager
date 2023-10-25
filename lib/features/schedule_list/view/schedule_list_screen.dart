@@ -47,11 +47,11 @@ class ScheduleListScreen extends StatelessWidget {
                                 ''),
                             Text(DateFormat("hh:mm").format(res.deadline))
                           ]),
-                      trailing: SvgPicture.asset(
+                      trailing: res.important ? SvgPicture.asset(
                         "assets/important_icon.svg",
                         width: 25,
                         height: 25,
-                      ),
+                      ) : null,
                       onTap: () {
                         Navigator.of(context)
                             .pushNamed("/task", arguments: res);
