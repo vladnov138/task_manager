@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:task_manager/features/schedule_list/schedule_list.dart';
+import 'package:task_manager/services/NotificationService.dart';
 
 import '../../../client/hive_names.dart';
 import '../../../models/task.dart';
@@ -34,27 +36,29 @@ class ScheduleListScreen extends StatelessWidget {
                   background: Container(color: Colors.red),
                   key: UniqueKey(),
                   onDismissed: (direction) {
+                    GetIt.I<NotificationService>()
+                        .cancelNotification(res.notificationId);
                     res.delete();
                   },
                   child: ListTile(
-                      title: Text(res.task ?? ''),
-                      subtitle: Text("Study"),
-                      leading: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(DateFormat('EEE, d').format(res.deadline) ??
-                                ''),
-                            Text(DateFormat("hh:mm").format(res.deadline))
-                          ]),
-                      trailing: res.important ? SvgPicture.asset(
-                        "assets/important_icon.svg",
-                        width: 25,
-                        height: 25,
-                      ) : null,
-                      onTap: () {
-                        Navigator.of(context)
-                            .pushNamed("/task", arguments: res);
-                      },
+                    title: Text(res.task ?? ''),
+                    subtitle: Text("Study"),
+                    leading: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(DateFormat('EEE, d').format(res.deadline) ?? ''),
+                          Text(DateFormat("hh:mm").format(res.deadline))
+                        ]),
+                    trailing: res.important
+                        ? SvgPicture.asset(
+                            "assets/important_icon.svg",
+                            width: 25,
+                            height: 25,
+                          )
+                        : null,
+                    onTap: () {
+                      Navigator.of(context).pushNamed("/task", arguments: res);
+                    },
                   ),
                 );
               },

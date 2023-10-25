@@ -17,25 +17,28 @@ class NotificationService {
     await _flutterLocalNotificationsPlugin.initialize(initializationSettings);
   }
 
-  Future<void> sendNotification(String title, String body, DateTime dateTime) async {
+  Future<void> sendNotification(
+      int notificationId, String title, String body, DateTime dateTime) async {
     AndroidNotificationDetails androidNotificationDetails =
-      AndroidNotificationDetails(
-          'channelId',
-          'channelName',
-          importance: Importance.max,
-          priority: Priority.high);
-    NotificationDetails notificationDetails = NotificationDetails(
-      android: androidNotificationDetails
-    );
+        const AndroidNotificationDetails('channelId', 'channelName',
+            importance: Importance.max, priority: Priority.high);
+    NotificationDetails notificationDetails =
+        NotificationDetails(android: androidNotificationDetails);
     debugPrint("Registration: ");
     debugPrint(dateTime.toString());
-    await _flutterLocalNotificationsPlugin.zonedSchedule(
-        0,
-        title,
-        body,
-        tz.TZDateTime.from(dateTime, tz.UTC),
-        notificationDetails,
+    await _flutterLocalNotificationsPlugin.zonedSchedule(notificationId, title,
+        body, tz.TZDateTime.from(dateTime, tz.UTC), notificationDetails,
         uiLocalNotificationDateInterpretation:
-          UILocalNotificationDateInterpretation.absoluteTime);
+            UILocalNotificationDateInterpretation.absoluteTime);
+  }
+
+  Future<void> cancelNotification(int notificationId) async {
+    await _flutterLocalNotificationsPlugin.cancel(notificationId);
+  }
+
+  Future<void> updateNotification(
+      int notificationId, String title, String body, DateTime dateTime) async {
+      cancelNotification(notificationId);
+      sendNotification(notificationId, title, body, dateTime);
   }
 }

@@ -18,9 +18,18 @@ class AddingTaskScreen extends StatefulWidget {
 
 class _AddingTaskScreenState extends State<AddingTaskScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  List<String> categories = [
+    'Study',
+    'Job',
+    'Rest',
+    'Hobby',
+    'Others',
+  ];
+
   bool deadlineValidated = true;
   String? task;
-  String? details;
+  String details = '';
+  String category = '';
   DateTime? deadline;
   bool important = false;
 
@@ -39,6 +48,7 @@ class _AddingTaskScreenState extends State<AddingTaskScreen> {
 
   @override
   Widget build(BuildContext context) {
+    category = categories[0];
     return Scaffold(
       appBar: AppBar(
         title: const Text('Task'),
@@ -90,13 +100,37 @@ class _AddingTaskScreenState extends State<AddingTaskScreen> {
                         style: mainTheme.textTheme.headlineSmall,
                       ),
                       TextFormField(
-                        validator: (value) {
-                          return value?.isEmpty ?? true
-                              ? "Cannot be empty"
-                              : null;
-                        },
                         onChanged: (value) {
                           details = value;
+                        },
+                      ),
+                    ],
+                  ),
+                  const TableRow(
+                    children: [
+                      SizedBox(height: 20),
+                      SizedBox(height: 20),
+                    ],
+                  ),
+                  TableRow(
+                    children: [
+                      Text(
+                        "Category",
+                        style: mainTheme.textTheme.headlineSmall,
+                      ),
+                      DropdownButton(
+                        value: category,
+                        icon: const Icon(Icons.keyboard_arrow_down),
+                        items: categories.map((String items) {
+                          return DropdownMenuItem(
+                            value: items,
+                            child: Text(items),
+                          );
+                        }).toList(),
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            category = newValue!;
+                          });
                         },
                       ),
                     ],
@@ -119,7 +153,7 @@ class _AddingTaskScreenState extends State<AddingTaskScreen> {
                                 shape: MaterialStateProperty.all(
                                     RoundedRectangleBorder(
                                         side: const BorderSide(
-                                          color: Colors.red, // your color here
+                                          color: Colors.red,
                                           width: 1,
                                         ),
                                         borderRadius:
@@ -129,7 +163,7 @@ class _AddingTaskScreenState extends State<AddingTaskScreen> {
                           DatePicker.showDateTimePicker(
                             context,
                             currentTime: DateTime.now(),
-                            minTime: DateTime(2000),
+                            minTime: DateTime.now(),
                             maxTime: DateTime(3000),
                             onConfirm: (dateTime) {
                               setState(() {
@@ -177,17 +211,23 @@ class _AddingTaskScreenState extends State<AddingTaskScreen> {
 
   void _onFormSubmit() {
     Box<Task> contactsBox = Hive.box<Task>(HiveBoxes.task);
+    int pushId = 0;
+    if (contactsBox.values.isNotEmpty) {
+      pushId = contactsBox.values.toList().last.notificationId;
+    }
     debugPrint(task);
     debugPrint(details);
     debugPrint(deadline.toString());
     contactsBox.add(Task(
         task: task!,
         details: details!,
+        category: category,
         deadline: deadline!,
         important: important,
         complete: false,
-        updated_at: DateTime.now()));
-    GetIt.I<NotificationService>().sendNotification(task!, details!, deadline!);
+        updated_at: DateTime.now(),
+        notificationId: pushId));
+    GetIt.I<NotificationService>().sendNotification(pushId, task!, details, deadline!);
     Navigator.of(context).pop();
   }
 }
