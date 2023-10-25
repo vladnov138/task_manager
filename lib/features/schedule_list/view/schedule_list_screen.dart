@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:task_manager/features/schedule_list/schedule_list.dart';
@@ -46,8 +47,14 @@ class ScheduleListScreen extends StatelessWidget {
                                 ''),
                             Text(DateFormat("hh:mm").format(res.deadline))
                           ]),
+                      trailing: SvgPicture.asset(
+                        "assets/important_icon.svg",
+                        width: 25,
+                        height: 25,
+                      ),
                       onTap: () {
-                        Navigator.of(context).pushNamed("/task", arguments: res);
+                        Navigator.of(context)
+                            .pushNamed("/task", arguments: res);
                       }),
                 );
               },
