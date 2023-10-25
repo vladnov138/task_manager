@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:intl/intl.dart';
 import 'package:task_manager/features/schedule_list/schedule_list.dart';
+
+import '../../../client/hive_names.dart';
+import '../../../models/task.dart';
 
 class ScheduleListScreen extends StatelessWidget {
   const ScheduleListScreen({super.key});
@@ -10,41 +15,44 @@ class ScheduleListScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text("Tasks"),
       ),
-      body: Padding(
-        padding: const EdgeInsets.only(top: 15, left: 15, right: 15),
-        child: Column(
-          children: [
-            Table(
-              columnWidths: const <int, TableColumnWidth>{
-                0: FlexColumnWidth(15),
-                1: FlexColumnWidth(80),
-                2: FlexColumnWidth(5),
-              },
-              children: [
-                TableRow(children: [
-                  const TableCell(
-                      verticalAlignment: TableCellVerticalAlignment.middle,
-                      child: DateWidget(date: "Tue, 29")),
-                  TableCell(
-                    verticalAlignment: TableCellVerticalAlignment.middle,
-                    child: GestureDetector(
+      body: ValueListenableBuilder(
+          valueListenable: Hive.box<Task>(HiveBoxes.task).listenable(),
+          builder: (context, Box<Task> box, _) {
+            if (box.values.isEmpty) {
+              return const Center(
+                child: Text("Todo list is empty"),
+              );
+            }
+            return ListView.builder(
+              itemCount: box.values.length,
+              itemBuilder: (context, index) {
+                Task? res = box.getAt(index);
+                if (res == null) {
+                  return const Text("Empty");
+                }
+                return Dismissible(
+                  background: Container(color: Colors.red),
+                  key: UniqueKey(),
+                  onDismissed: (direction) {
+                    res.delete();
+                  },
+                  child: ListTile(
+                      title: Text(res.task ?? ''),
+                      subtitle: Text("Study"),
+                      leading: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(DateFormat('EEE, d').format(res.deadline) ??
+                                ''),
+                            Text(DateFormat("hh:mm").format(res.deadline))
+                          ]),
                       onTap: () {
-                        Navigator.of(context).pushNamed('/task');
-                      },
-                      child: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          child: const TaskTitleWidget()),
-                    ),
-                  ),
-                  const TableCell(
-                      verticalAlignment: TableCellVerticalAlignment.middle,
-                      child: Text("!"))
-                ])
-              ],
-            ),
-          ],
-        ),
-      ),
+                        Navigator.of(context).pushNamed("/task", arguments: res);
+                      }),
+                );
+              },
+            );
+          }),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.of(context).pushNamed('/add_task');
