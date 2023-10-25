@@ -24,13 +24,12 @@ class ScheduleListScreen extends StatelessWidget {
                 child: Text("Todo list is empty"),
               );
             }
+            List<Task> sortered = box.values.toList();
+            sortered.sort((a, b) => a.deadline.compareTo(b.deadline));
             return ListView.builder(
-              itemCount: box.values.length,
+              itemCount: sortered.length,
               itemBuilder: (context, index) {
-                Task? res = box.getAt(index);
-                if (res == null) {
-                  return const Text("Empty");
-                }
+                Task? res = sortered[index];
                 return Dismissible(
                   background: Container(color: Colors.red),
                   key: UniqueKey(),
@@ -55,7 +54,8 @@ class ScheduleListScreen extends StatelessWidget {
                       onTap: () {
                         Navigator.of(context)
                             .pushNamed("/task", arguments: res);
-                      }),
+                      },
+                  ),
                 );
               },
             );
