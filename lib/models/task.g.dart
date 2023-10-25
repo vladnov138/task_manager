@@ -31,16 +31,17 @@ class TaskAdapter extends TypeAdapter<Task> {
     writer
       ..writeByte(6)
       ..writeByte(0)
-      ..writeByte(1)
       ..write(obj.task)
-      ..writeByte(2)
+      ..writeByte(1)
       ..write(obj.details)
-      ..writeByte(3)
+      ..writeByte(2)
       ..write(obj.deadline)
-      ..writeByte(4)
+      ..writeByte(3)
       ..write(obj.important)
+      ..writeByte(4)
+      ..write(obj.complete)
       ..writeByte(5)
-      ..write(obj.complete);
+      ..write(obj.updated_at);
   }
 
   @override
