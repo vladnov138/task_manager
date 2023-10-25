@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
 import 'package:hive/hive.dart';
+import 'package:intl/intl.dart';
 import 'package:task_manager/models/task.dart';
 
 import '../../../client/hive_names.dart';
@@ -15,7 +16,7 @@ class AddingTaskScreen extends StatefulWidget {
 
 class _AddingTaskScreenState extends State<AddingTaskScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  bool test = false;
+  bool deadlineValidated = true;
   String? task;
   String? details;
   DateTime? deadline;
@@ -23,13 +24,15 @@ class _AddingTaskScreenState extends State<AddingTaskScreen> {
 
   void validateAndSave() {
     final FormState? form = _formKey.currentState;
-    if (form != null && form.validate()) {
+    if (form != null && form.validate() && deadline != null) {
       print('Form is valid');
       _onFormSubmit();
     } else {
+      setState(() {
+        deadlineValidated = !(deadline == null);
+      });
       print('Form is invalid');
     }
-
   }
 
   @override
@@ -67,9 +70,7 @@ class _AddingTaskScreenState extends State<AddingTaskScreen> {
                               : null;
                         },
                         onChanged: (value) {
-                          setState(() {
-                            task = value;
-                          });
+                          task = value;
                         },
                       ),
                     ],
@@ -87,10 +88,13 @@ class _AddingTaskScreenState extends State<AddingTaskScreen> {
                         style: mainTheme.textTheme.headlineSmall,
                       ),
                       TextFormField(
+                        validator: (value) {
+                          return value?.isEmpty ?? true
+                              ? "Cannot be empty"
+                              : null;
+                        },
                         onChanged: (value) {
-                          setState(() {
-                            details = value;
-                          });
+                          details = value;
                         },
                       ),
                     ],
@@ -108,21 +112,33 @@ class _AddingTaskScreenState extends State<AddingTaskScreen> {
                         style: mainTheme.textTheme.headlineSmall,
                       ),
                       TextButton(
-                          onPressed: () {
-                            DatePicker.showDateTimePicker(
-                              context,
-                              // dateFormat: 'dd MMMM yyyy HH:mm',
-                              currentTime: DateTime.now(),
-                              minTime: DateTime(2000),
-                              maxTime: DateTime(3000),
-                              // onMonthChangeStartWithFirstDate: true,
-                              onConfirm: (dateTime) {
-                                print(dateTime);
+                        style: !deadlineValidated
+                            ? ButtonStyle(
+                                shape: MaterialStateProperty.all(
+                                    RoundedRectangleBorder(
+                                        side: const BorderSide(
+                                          color: Colors.red, // your color here
+                                          width: 1,
+                                        ),
+                                        borderRadius:
+                                            BorderRadius.circular(0))))
+                            : null,
+                        onPressed: () {
+                          DatePicker.showDateTimePicker(
+                            context,
+                            currentTime: DateTime.now(),
+                            minTime: DateTime(2000),
+                            maxTime: DateTime(3000),
+                            onConfirm: (dateTime) {
+                              setState(() {
                                 deadline = dateTime;
-                              },
-                            );
-                          },
-                          child: const Text("Date"),
+                              });
+                            },
+                          );
+                        },
+                        child: Text(deadline == null
+                            ? "Select date"
+                            : DateFormat("dd.MM.yyyy hh:mm").format(deadline!)),
                       ),
                     ],
                   ),
@@ -162,15 +178,13 @@ class _AddingTaskScreenState extends State<AddingTaskScreen> {
     print(task);
     print(details);
     print(deadline);
-    contactsBox.add(
-        Task(
-            task: task!,
-            details: details!,
-            deadline: deadline!,
-            important: important,
-            complete: false,
-            updated_at: DateTime.now())
-    );
+    contactsBox.add(Task(
+        task: task!,
+        details: details!,
+        deadline: deadline!,
+        important: important,
+        complete: false,
+        updated_at: DateTime.now()));
     Navigator.of(context).pop();
   }
 }
