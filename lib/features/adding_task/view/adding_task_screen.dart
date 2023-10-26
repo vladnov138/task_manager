@@ -31,6 +31,7 @@ class _AddingTaskScreenState extends State<AddingTaskScreen> {
   String details = '';
   String category = '';
   DateTime? deadline;
+  DateTime? notificationDateTime;
   bool important = false;
 
   void validateAndSave() {
@@ -48,7 +49,7 @@ class _AddingTaskScreenState extends State<AddingTaskScreen> {
 
   @override
   Widget build(BuildContext context) {
-    category = categories[0];
+    category = category == '' ? categories[0] : category;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Task'),
@@ -57,152 +58,194 @@ class _AddingTaskScreenState extends State<AddingTaskScreen> {
         padding: const EdgeInsets.all(20),
         child: Form(
           key: _formKey,
-          child: Column(
-            children: [
-              Table(
-                columnWidths: const <int, TableColumnWidth>{
-                  0: FlexColumnWidth(10),
-                  1: FlexColumnWidth(20),
-                },
-                children: [
-                  TableRow(
-                    children: [
-                      TableCell(
-                        verticalAlignment: TableCellVerticalAlignment.middle,
-                        child: Text(
-                          "Task title",
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Table(
+                  columnWidths: const <int, TableColumnWidth>{
+                    0: FlexColumnWidth(10),
+                    1: FlexColumnWidth(20),
+                  },
+                  children: [
+                    TableRow(
+                      children: [
+                        TableCell(
+                          verticalAlignment: TableCellVerticalAlignment.middle,
+                          child: Text(
+                            "Task title",
+                            style: mainTheme.textTheme.headlineSmall,
+                          ),
+                        ),
+                        TextFormField(
+                          validator: (value) {
+                            print(value);
+                            return value?.isEmpty ?? true
+                                ? "Cannot be empty"
+                                : null;
+                          },
+                          onChanged: (value) {
+                            task = value;
+                          },
+                        ),
+                      ],
+                    ),
+                    const TableRow(
+                      children: [
+                        SizedBox(height: 20),
+                        SizedBox(height: 20),
+                      ],
+                    ),
+                    TableRow(
+                      children: [
+                        Text(
+                          "Details",
                           style: mainTheme.textTheme.headlineSmall,
                         ),
-                      ),
-                      TextFormField(
-                        validator: (value) {
-                          print(value);
-                          return value?.isEmpty ?? true
-                              ? "Cannot be empty"
-                              : null;
-                        },
-                        onChanged: (value) {
-                          task = value;
-                        },
-                      ),
-                    ],
-                  ),
-                  const TableRow(
-                    children: [
-                      SizedBox(height: 20),
-                      SizedBox(height: 20),
-                    ],
-                  ),
-                  TableRow(
-                    children: [
-                      Text(
-                        "Details",
-                        style: mainTheme.textTheme.headlineSmall,
-                      ),
-                      TextFormField(
-                        onChanged: (value) {
-                          details = value;
-                        },
-                      ),
-                    ],
-                  ),
-                  const TableRow(
-                    children: [
-                      SizedBox(height: 20),
-                      SizedBox(height: 20),
-                    ],
-                  ),
-                  TableRow(
-                    children: [
-                      Text(
-                        "Category",
-                        style: mainTheme.textTheme.headlineSmall,
-                      ),
-                      DropdownButton(
-                        value: category,
-                        icon: const Icon(Icons.keyboard_arrow_down),
-                        items: categories.map((String items) {
-                          return DropdownMenuItem(
-                            value: items,
-                            child: Text(items),
-                          );
-                        }).toList(),
-                        onChanged: (String? newValue) {
-                          setState(() {
-                            category = newValue!;
-                          });
-                        },
-                      ),
-                    ],
-                  ),
-                  const TableRow(
-                    children: [
-                      SizedBox(height: 20),
-                      SizedBox(height: 20),
-                    ],
-                  ),
-                  TableRow(
-                    children: [
-                      Text(
-                        "Deadline",
-                        style: mainTheme.textTheme.headlineSmall,
-                      ),
-                      TextButton(
-                        style: !deadlineValidated
-                            ? ButtonStyle(
-                                shape: MaterialStateProperty.all(
-                                    RoundedRectangleBorder(
-                                        side: const BorderSide(
-                                          color: Colors.red,
-                                          width: 1,
-                                        ),
-                                        borderRadius:
-                                            BorderRadius.circular(0))))
-                            : null,
-                        onPressed: () {
-                          DatePicker.showDateTimePicker(
-                            context,
-                            currentTime: DateTime.now(),
-                            minTime: DateTime.now(),
-                            maxTime: DateTime(3000),
-                            onConfirm: (dateTime) {
+                        TextFormField(
+                          onChanged: (value) {
+                            details = value;
+                          },
+                        ),
+                      ],
+                    ),
+                    const TableRow(
+                      children: [
+                        SizedBox(height: 20),
+                        SizedBox(height: 20),
+                      ],
+                    ),
+                    TableRow(
+                      children: [
+                        Text(
+                          "Category",
+                          style: mainTheme.textTheme.headlineSmall,
+                        ),
+                        DropdownButton(
+                          value: category,
+                          icon: const Icon(Icons.keyboard_arrow_down),
+                          items: categories.map((String items) {
+                            return DropdownMenuItem(
+                              value: items,
+                              child: Text(items),
+                            );
+                          }).toList(),
+                          onChanged: (String? newValue) {
+                            setState(() {
+                              category = newValue!;
+                            });
+                          },
+                        ),
+                      ],
+                    ),
+                    const TableRow(
+                      children: [
+                        SizedBox(height: 20),
+                        SizedBox(height: 20),
+                      ],
+                    ),
+                    TableRow(
+                      children: [
+                        Text(
+                          "Deadline",
+                          style: mainTheme.textTheme.headlineSmall,
+                        ),
+                        TextButton(
+                          style: !deadlineValidated
+                              ? ButtonStyle(
+                                  shape: MaterialStateProperty.all(
+                                      RoundedRectangleBorder(
+                                          side: const BorderSide(
+                                            color: Colors.red,
+                                            width: 1,
+                                          ),
+                                          borderRadius:
+                                              BorderRadius.circular(0))))
+                              : null,
+                          onPressed: () {
+                            DatePicker.showDateTimePicker(
+                              context,
+                              currentTime: DateTime.now(),
+                              minTime: DateTime.now(),
+                              maxTime: DateTime(3000),
+                              onConfirm: (dateTime) {
+                                setState(() {
+                                  deadline = dateTime;
+                                });
+                              },
+                            );
+                          },
+                          child: Text(deadline == null
+                              ? "Select date"
+                              : DateFormat("dd.MM.yyyy hh:mm")
+                                  .format(deadline!)),
+                        ),
+                      ],
+                    ),
+                    const TableRow(
+                      children: [
+                        SizedBox(height: 20),
+                        SizedBox(height: 20),
+                      ],
+                    ),
+                    TableRow(
+                      children: [
+                        Text(
+                          "Notification",
+                          style: mainTheme.textTheme.headlineSmall,
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            if (deadline == null) {
                               setState(() {
-                                deadline = dateTime;
+                                deadlineValidated = false;
                               });
-                            },
-                          );
-                        },
-                        child: Text(deadline == null
-                            ? "Select date"
-                            : DateFormat("dd.MM.yyyy hh:mm").format(deadline!)),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-              CheckboxListTile(
-                title: const Text("Important"),
-                controlAffinity: ListTileControlAffinity.leading,
-                onChanged: (bool? value) {
-                  setState(() {
-                    important = value ?? false;
-                  });
-                },
-                value: important,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 25),
-                child: MaterialButton(
-                  onPressed: validateAndSave,
-                  color: Colors.blue,
-                  minWidth: 200,
-                  child: Text(
-                    "Add",
-                    style: mainTheme.textTheme.labelMedium,
+                              return;
+                            }
+                            DatePicker.showDateTimePicker(
+                              context,
+                              currentTime: DateTime.now(),
+                              minTime: DateTime.now(),
+                              maxTime: deadline,
+                              onConfirm: (dateTime) {
+                                setState(() {
+                                  notificationDateTime = dateTime;
+                                });
+                              },
+                            );
+                          },
+                          child: Text(notificationDateTime == null
+                              ? "Select notification date"
+                              : DateFormat("dd.MM.yyyy hh:mm")
+                              .format(notificationDateTime!)),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                CheckboxListTile(
+                  title: const Text("Important"),
+                  controlAffinity: ListTileControlAffinity.leading,
+                  onChanged: (bool? value) {
+                    setState(() {
+                      important = value ?? false;
+                    });
+                  },
+                  value: important,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 25),
+                  child: MaterialButton(
+                    onPressed: validateAndSave,
+                    color: Colors.blue,
+                    minWidth: 200,
+                    child: Text(
+                      "Add",
+                      style: mainTheme.textTheme.labelMedium,
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -211,13 +254,15 @@ class _AddingTaskScreenState extends State<AddingTaskScreen> {
 
   void _onFormSubmit() {
     Box<Task> contactsBox = Hive.box<Task>(HiveBoxes.task);
-    int pushId = 0;
-    if (contactsBox.values.isNotEmpty) {
-      pushId = contactsBox.values.toList().last.notificationId;
+    int? pushId;
+    if (notificationDateTime != null) {
+      for (int i = contactsBox.values.length - 1; i > 0; i--) {
+        int? lastNotificationId = contactsBox.values.toList()[i].notificationId;
+        if (lastNotificationId != null) {
+          pushId = lastNotificationId + 1;
+        }
+      }
     }
-    debugPrint(task);
-    debugPrint(details);
-    debugPrint(deadline.toString());
     contactsBox.add(Task(
         task: task!,
         details: details!,
@@ -226,8 +271,12 @@ class _AddingTaskScreenState extends State<AddingTaskScreen> {
         important: important,
         complete: false,
         updated_at: DateTime.now(),
-        notificationId: pushId));
-    GetIt.I<NotificationService>().sendNotification(pushId, task!, details, deadline!);
+        notificationId: pushId,
+        notificationDateTime: notificationDateTime));
+    if (pushId != null) {
+      GetIt.I<NotificationService>()
+          .sendNotification(pushId, task!, details, notificationDateTime!);
+    }
     Navigator.of(context).pop();
   }
 }
