@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get_it/get_it.dart';
@@ -9,6 +10,7 @@ import 'package:task_manager/services/NotificationService.dart';
 import '../../../client/hive_names.dart';
 import '../../../models/task.dart';
 
+@RoutePage()
 class ScheduleListScreen extends StatefulWidget {
   const ScheduleListScreen({super.key});
 

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:task_manager/features/sign_in/view/sign_in_screen.dart';
 
 import 'router/router.dart';
 import 'theme/theme.dart';
@@ -12,6 +14,8 @@ class TaskManagerApp extends StatefulWidget {
 }
 
 class _TaskManagerAppState extends State<TaskManagerApp> {
+  final _appRouter = AppRouter();
+
   @override
   void dispose() async {
     Hive.close();
@@ -21,10 +25,10 @@ class _TaskManagerAppState extends State<TaskManagerApp> {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       title: 'Task manager',
       theme: mainTheme,
-      routes: routes,
+      routerConfig: _appRouter.config(),
     );
   }
 }

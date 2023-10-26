@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
 import 'package:intl/intl.dart';
@@ -7,6 +8,7 @@ import 'package:task_manager/theme/theme.dart';
 import '../../../models/task.dart';
 import '../../schedule_list/schedule_list.dart';
 
+@RoutePage()
 class TaskScreen extends StatefulWidget {
   TaskScreen({super.key});
 
