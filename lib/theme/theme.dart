@@ -12,6 +12,7 @@ final mainTheme = ThemeData(
   ),
   colorScheme: const ColorScheme.light(),
   useMaterial3: true,
+  primaryColor: const Color.fromRGBO(140, 106, 255, 100),
   textTheme: const TextTheme(
     labelSmall: TextStyle(
       color: Colors.indigoAccent,
