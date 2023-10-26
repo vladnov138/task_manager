@@ -19,7 +19,9 @@ class Task extends HiveObject {
   @HiveField(6)
   DateTime updated_at;
   @HiveField(7)
-  int notificationId;
+  int? notificationId;
+  @HiveField(8)
+  DateTime? notificationDateTime;
 
   Task(
       {required this.task,
@@ -29,5 +31,6 @@ class Task extends HiveObject {
       required this.important,
       required this.complete,
       required this.updated_at,
-      required this.notificationId});
+      required this.notificationId,
+      required this.notificationDateTime});
 }
