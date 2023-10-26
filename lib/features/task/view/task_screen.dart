@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
+import 'package:intl/intl.dart';
 import 'package:task_manager/features/task/task.dart';
 import 'package:task_manager/theme/theme.dart';
 
@@ -13,6 +15,14 @@ class TaskScreen extends StatefulWidget {
 }
 
 class _TaskScreenState extends State<TaskScreen> {
+  List<String> categories = [
+    'Study',
+    'Job',
+    'Rest',
+    'Hobby',
+    'Others',
+  ];
+
   @override
   void didChangeDependencies() {
     final args = ModalRoute.of(context)?.settings.arguments;
@@ -71,6 +81,93 @@ class _TaskScreenState extends State<TaskScreen> {
                   SizedBox(height: 20),
                   SizedBox(height: 20),
                 ]),
+                TableRow(
+                  children: [
+                    Text(
+                      "Category",
+                      style: mainTheme.textTheme.headlineSmall,
+                    ),
+                    DropdownButton(
+                      value: res!.category,
+                      icon: const Icon(Icons.keyboard_arrow_down),
+                      items: categories.map((String items) {
+                        return DropdownMenuItem(
+                          value: items,
+                          child: Text(items),
+                        );
+                      }).toList(),
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          res!.category = newValue!;
+                        });
+                      },
+                    ),
+                  ],
+                ),
+                const TableRow(
+                  children: [
+                    SizedBox(height: 20),
+                    SizedBox(height: 20),
+                  ],
+                ),
+                TableRow(
+                  children: [
+                    Text(
+                      "Deadline",
+                      style: mainTheme.textTheme.headlineSmall,
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        DatePicker.showDateTimePicker(
+                          context,
+                          currentTime: res!.deadline,
+                          minTime: DateTime.now(),
+                          maxTime: DateTime(3000),
+                          onConfirm: (dateTime) {
+                            setState(() {
+                              res!.deadline = dateTime;
+                            });
+                          },
+                        );
+                      },
+                      child: Text(DateFormat("dd.MM.yyyy hh:mm")
+                          .format(res!.deadline)),
+                    ),
+                  ],
+                ),
+                const TableRow(
+                  children: [
+                    SizedBox(height: 20),
+                    SizedBox(height: 20),
+                  ],
+                ),
+                TableRow(
+                  children: [
+                    Text(
+                      "Notification",
+                      style: mainTheme.textTheme.headlineSmall,
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        DatePicker.showDateTimePicker(
+                          context,
+                          currentTime: res?.notificationDateTime ?? DateTime.now(),
+                          minTime: DateTime.now(),
+                          maxTime: res!.deadline,
+                          onConfirm: (dateTime) {
+                            setState(() {
+                              res!.notificationDateTime = dateTime;
+                            });
+                          },
+                        );
+                      },
+                      child: Text(res?.notificationDateTime == null
+                          ? "Select notification date"
+                          : DateFormat("dd.MM.yyyy hh:mm")
+                          .format(res!.notificationDateTime!)),
+                    ),
+                  ],
+                ),
               ],
             ),
             CheckboxListTile(
