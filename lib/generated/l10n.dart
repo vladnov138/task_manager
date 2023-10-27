@@ -359,6 +359,46 @@ class S {
       args: [],
     );
   }
+
+  /// `Synchronize`
+  String get synchronize {
+    return Intl.message(
+      'Synchronize',
+      name: 'synchronize',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `All`
+  String get all {
+    return Intl.message(
+      'All',
+      name: 'all',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Overdue`
+  String get overdue {
+    return Intl.message(
+      'Overdue',
+      name: 'overdue',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `download`
+  String get download {
+    return Intl.message(
+      'download',
+      name: 'download',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
