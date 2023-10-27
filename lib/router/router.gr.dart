@@ -40,17 +40,21 @@ abstract class _$AppRouter extends RootStackRouter {
       );
     },
     SignUpRoute.name: (routeData) {
+      final args = routeData.argsAs<SignUpRouteArgs>(
+          orElse: () => const SignUpRouteArgs());
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: SignUpScreen(),
+        child: SignUpScreen(key: args.key),
       );
     },
     TaskRoute.name: (routeData) {
-      final args =
-          routeData.argsAs<TaskRouteArgs>(orElse: () => const TaskRouteArgs());
+      final args = routeData.argsAs<TaskRouteArgs>();
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: TaskScreen(key: args.key),
+        child: TaskScreen(
+          key: args.key,
+          task: args.task,
+        ),
       );
     },
   };
@@ -114,16 +118,30 @@ class SignInRoute extends PageRouteInfo<void> {
 
 /// generated route for
 /// [SignUpScreen]
-class SignUpRoute extends PageRouteInfo<void> {
-  const SignUpRoute({List<PageRouteInfo>? children})
-      : super(
+class SignUpRoute extends PageRouteInfo<SignUpRouteArgs> {
+  SignUpRoute({
+    Key? key,
+    List<PageRouteInfo>? children,
+  }) : super(
           SignUpRoute.name,
+          args: SignUpRouteArgs(key: key),
           initialChildren: children,
         );
 
   static const String name = 'SignUpRoute';
 
-  static const PageInfo<void> page = PageInfo<void>(name);
+  static const PageInfo<SignUpRouteArgs> page = PageInfo<SignUpRouteArgs>(name);
+}
+
+class SignUpRouteArgs {
+  const SignUpRouteArgs({this.key});
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'SignUpRouteArgs{key: $key}';
+  }
 }
 
 /// generated route for
@@ -131,10 +149,14 @@ class SignUpRoute extends PageRouteInfo<void> {
 class TaskRoute extends PageRouteInfo<TaskRouteArgs> {
   TaskRoute({
     Key? key,
+    required Task task,
     List<PageRouteInfo>? children,
   }) : super(
           TaskRoute.name,
-          args: TaskRouteArgs(key: key),
+          args: TaskRouteArgs(
+            key: key,
+            task: task,
+          ),
           initialChildren: children,
         );
 
@@ -144,12 +166,17 @@ class TaskRoute extends PageRouteInfo<TaskRouteArgs> {
 }
 
 class TaskRouteArgs {
-  const TaskRouteArgs({this.key});
+  const TaskRouteArgs({
+    this.key,
+    required this.task,
+  });
 
   final Key? key;
 
+  final Task task;
+
   @override
   String toString() {
-    return 'TaskRouteArgs{key: $key}';
+    return 'TaskRouteArgs{key: $key, task: $task}';
   }
 }

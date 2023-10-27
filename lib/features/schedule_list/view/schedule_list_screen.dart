@@ -4,10 +4,11 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
-import 'package:task_manager/features/schedule_list/schedule_list.dart';
+import 'package:task_manager/router/router.dart';
 import 'package:task_manager/services/NotificationService.dart';
 
 import '../../../client/hive_names.dart';
+import '../../../generated/l10n.dart';
 import '../../../models/task.dart';
 
 @RoutePage()
@@ -39,7 +40,7 @@ class _ScheduleListScreenState extends State<ScheduleListScreen> {
     type = type == '' ? types[0] : type;
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Tasks"),
+        title: Text(S.of(context).tasks),
       ),
       body: Column(
         children: [
@@ -85,6 +86,7 @@ class _ScheduleListScreenState extends State<ScheduleListScreen> {
               ),
             ],
           ),
+
           ValueListenableBuilder(
               valueListenable: Hive.box<Task>(HiveBoxes.task).listenable(),
               builder: (context, Box<Task> box, _) {
@@ -98,19 +100,18 @@ class _ScheduleListScreenState extends State<ScheduleListScreen> {
                 if (type == types[1]) {
                   sortered =
                       sortered.where((element) => element.complete).toList();
-                  print(type);
                 } else if (type == types[2]) {
                   sortered = sortered
                       .where((element) =>
                           element.notificationDateTime != null &&
                           element.notificationDateTime!
-                                  .compareTo(DateTime.now()) ==
+                                  .compareTo(DateTime.now().toLocal()) ==
                               -1)
                       .toList();
                 }
                 if (sortered.isEmpty) {
-                  return const Center(
-                    child: Text("Todo list is empty"),
+                  return Center(
+                    child: Text(S.of(context).todoListIsEmpty),
                   );
                 }
                 return ListView.builder(
@@ -139,7 +140,7 @@ class _ScheduleListScreenState extends State<ScheduleListScreen> {
                                   ''),
                               Text(DateFormat("hh:mm").format(res.deadline))
                             ]),
-                        trailing: res.important
+                        trailing: res.notificationDateTime?.compareTo(DateTime.now().toLocal()) == -1
                             ? SvgPicture.asset(
                                 "assets/important_icon.svg",
                                 width: 25,
@@ -147,8 +148,7 @@ class _ScheduleListScreenState extends State<ScheduleListScreen> {
                               )
                             : null,
                         onTap: () {
-                          Navigator.of(context)
-                              .pushNamed("/task", arguments: res);
+                          AutoRouter.of(context).push(TaskRoute(task: res));
                         },
                       ),
                     );
@@ -159,7 +159,7 @@ class _ScheduleListScreenState extends State<ScheduleListScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.of(context).pushNamed('/add_task');
+          AutoRouter.of(context).push(const AddingTaskRoute());
         },
         child: const Icon(Icons.add),
       ),

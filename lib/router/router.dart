@@ -8,6 +8,7 @@ import 'package:task_manager/features/task/view/task_screen.dart';
 import 'package:task_manager/router/guard/auth_guard.dart';
 
 import '../features/sign_up/sign_up.dart';
+import '../models/task.dart';
 
 part 'router.gr.dart';
 
@@ -21,5 +22,6 @@ class AppRouter extends _$AppRouter {
     AutoRoute(page: ProfileRoute.page, initial: true, guards: [AuthGuard()]),
     AutoRoute(page: ScheduleListRoute.page),
     AutoRoute(page: TaskRoute.page),
+    AutoRoute(page: AddingTaskRoute.page),
   ];
 }
