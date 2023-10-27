@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
 import 'package:get_it/get_it.dart';
@@ -7,8 +8,10 @@ import 'package:task_manager/models/task.dart';
 import 'package:task_manager/services/NotificationService.dart';
 
 import '../../../client/hive_names.dart';
+import '../../../generated/l10n.dart';
 import '../../../theme/theme.dart';
 
+@RoutePage()
 class AddingTaskScreen extends StatefulWidget {
   const AddingTaskScreen({super.key});
 
@@ -18,13 +21,19 @@ class AddingTaskScreen extends StatefulWidget {
 
 class _AddingTaskScreenState extends State<AddingTaskScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  List<String> categories = [
-    'Study',
-    'Job',
-    'Rest',
-    'Hobby',
-    'Others',
-  ];
+
+  late List<String> categories;
+  
+  @override
+  void initState() {
+    categories = [
+      S.of(context).study,
+      S.of(context).job,
+      S.of(context).rest,
+      S.of(context).hobby,
+      S.of(context).others,
+    ];
+  }
 
   bool deadlineValidated = true;
   String? task;
@@ -52,7 +61,7 @@ class _AddingTaskScreenState extends State<AddingTaskScreen> {
     category = category == '' ? categories[0] : category;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Task'),
+        title: Text(S.of(context).task),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20),
@@ -72,7 +81,7 @@ class _AddingTaskScreenState extends State<AddingTaskScreen> {
                         TableCell(
                           verticalAlignment: TableCellVerticalAlignment.middle,
                           child: Text(
-                            "Task title",
+                            S.of(context).taskTitle,
                             style: mainTheme.textTheme.headlineSmall,
                           ),
                         ),
@@ -80,7 +89,7 @@ class _AddingTaskScreenState extends State<AddingTaskScreen> {
                           validator: (value) {
                             print(value);
                             return value?.isEmpty ?? true
-                                ? "Cannot be empty"
+                                ? S.of(context).cannotBeEmpty
                                 : null;
                           },
                           onChanged: (value) {
@@ -98,7 +107,7 @@ class _AddingTaskScreenState extends State<AddingTaskScreen> {
                     TableRow(
                       children: [
                         Text(
-                          "Details",
+                          S.of(context).details,
                           style: mainTheme.textTheme.headlineSmall,
                         ),
                         TextFormField(
@@ -117,7 +126,7 @@ class _AddingTaskScreenState extends State<AddingTaskScreen> {
                     TableRow(
                       children: [
                         Text(
-                          "Category",
+                          S.of(context).category,
                           style: mainTheme.textTheme.headlineSmall,
                         ),
                         DropdownButton(
@@ -146,7 +155,7 @@ class _AddingTaskScreenState extends State<AddingTaskScreen> {
                     TableRow(
                       children: [
                         Text(
-                          "Deadline",
+                          S.of(context).deadline,
                           style: mainTheme.textTheme.headlineSmall,
                         ),
                         TextButton(
@@ -164,9 +173,9 @@ class _AddingTaskScreenState extends State<AddingTaskScreen> {
                           onPressed: () {
                             DatePicker.showDateTimePicker(
                               context,
-                              currentTime: DateTime.now(),
-                              minTime: DateTime.now(),
-                              maxTime: DateTime(3000),
+                              currentTime: DateTime.now().toLocal(),
+                              minTime: DateTime.now().toLocal(),
+                              maxTime: DateTime(3000).toLocal(),
                               onConfirm: (dateTime) {
                                 setState(() {
                                   deadline = dateTime;
@@ -175,7 +184,7 @@ class _AddingTaskScreenState extends State<AddingTaskScreen> {
                             );
                           },
                           child: Text(deadline == null
-                              ? "Select date"
+                              ? S.of(context).selectDate
                               : DateFormat("dd.MM.yyyy hh:mm")
                                   .format(deadline!)),
                         ),
@@ -190,7 +199,7 @@ class _AddingTaskScreenState extends State<AddingTaskScreen> {
                     TableRow(
                       children: [
                         Text(
-                          "Notification",
+                          S.of(context).notification,
                           style: mainTheme.textTheme.headlineSmall,
                         ),
                         TextButton(
@@ -203,8 +212,8 @@ class _AddingTaskScreenState extends State<AddingTaskScreen> {
                             }
                             DatePicker.showDateTimePicker(
                               context,
-                              currentTime: DateTime.now(),
-                              minTime: DateTime.now(),
+                              currentTime: DateTime.now().toLocal(),
+                              minTime: DateTime.now().toLocal(),
                               maxTime: deadline,
                               onConfirm: (dateTime) {
                                 setState(() {
@@ -214,7 +223,7 @@ class _AddingTaskScreenState extends State<AddingTaskScreen> {
                             );
                           },
                           child: Text(notificationDateTime == null
-                              ? "Select notification date"
+                              ? S.of(context).selectNotificationDate
                               : DateFormat("dd.MM.yyyy hh:mm")
                               .format(notificationDateTime!)),
                         ),
@@ -222,24 +231,14 @@ class _AddingTaskScreenState extends State<AddingTaskScreen> {
                     ),
                   ],
                 ),
-                CheckboxListTile(
-                  title: const Text("Important"),
-                  controlAffinity: ListTileControlAffinity.leading,
-                  onChanged: (bool? value) {
-                    setState(() {
-                      important = value ?? false;
-                    });
-                  },
-                  value: important,
-                ),
                 Padding(
                   padding: const EdgeInsets.only(top: 25),
                   child: MaterialButton(
                     onPressed: validateAndSave,
-                    color: Colors.blue,
+                    color: mainTheme.primaryColor,
                     minWidth: 200,
                     child: Text(
-                      "Add",
+                      S.of(context).add,
                       style: mainTheme.textTheme.labelMedium,
                     ),
                   ),
@@ -256,6 +255,7 @@ class _AddingTaskScreenState extends State<AddingTaskScreen> {
     Box<Task> contactsBox = Hive.box<Task>(HiveBoxes.task);
     int? pushId;
     if (notificationDateTime != null) {
+      pushId = 0;
       for (int i = contactsBox.values.length - 1; i > 0; i--) {
         int? lastNotificationId = contactsBox.values.toList()[i].notificationId;
         if (lastNotificationId != null) {
@@ -270,7 +270,7 @@ class _AddingTaskScreenState extends State<AddingTaskScreen> {
         deadline: deadline!,
         important: important,
         complete: false,
-        updated_at: DateTime.now(),
+        updated_at: DateTime.now().toLocal(),
         notificationId: pushId,
         notificationDateTime: notificationDateTime));
     if (pushId != null) {

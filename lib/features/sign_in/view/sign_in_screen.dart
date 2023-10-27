@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:task_manager/router/router.dart';
 
+import '../../../generated/l10n.dart';
 import '../../../theme/theme.dart';
 
 @RoutePage()
@@ -25,7 +26,7 @@ class _SignInScreenState extends State<SignInScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text("Sign in"),
+          title: Text(S.of(context).signIn),
         ),
         body: Center(
             child: Column(
@@ -34,14 +35,14 @@ class _SignInScreenState extends State<SignInScreen> {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 40),
                 child: TextFormField(
-                  decoration: const InputDecoration(labelText: "Email"),
+                  decoration: InputDecoration(labelText: S.of(context).email),
                   keyboardType: TextInputType.emailAddress,
                 ),
               ),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 40),
                 child: TextFormField(
-                  decoration: const InputDecoration(labelText: "Password"),
+                  decoration: InputDecoration(labelText: S.of(context).password),
                   obscureText: true,
                 ),
               ),
@@ -55,23 +56,23 @@ class _SignInScreenState extends State<SignInScreen> {
                     color: mainTheme.primaryColor,
                     minWidth: 200,
                     child: Text(
-                      "Submit",
+                      S.of(context).submit,
                       style: mainTheme.textTheme.labelMedium,
                     ),
                   ),
                   TextButton(
                     onPressed: () {},
                     child: Text(
-                      "Forgot password",
+                      S.of(context).forgotPassword,
                       style: mainTheme.textTheme.labelSmall,
                     ),
                   ),
                   TextButton(
                     onPressed: () {
-                      AutoRouter.of(context).push(const SignUpRoute());
+                      AutoRouter.of(context).push(SignUpRoute());
                     },
                     child: Text(
-                      "Sign Up",
+                      S.of(context).signUp,
                       style: mainTheme.textTheme.labelSmall,
                     ),
                   ),
@@ -81,7 +82,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       AutoRouter.of(context).popAndPush(const ProfileRoute());
                     },
                     child: Text(
-                      "Guest type",
+                      S.of(context).guestType,
                       style: mainTheme.textTheme.labelSmall,
                     ),
                   ),

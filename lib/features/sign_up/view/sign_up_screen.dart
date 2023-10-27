@@ -4,6 +4,7 @@ import 'package:get_it/get_it.dart';
 import 'package:task_manager/repository/abstract_repository.dart';
 import 'package:task_manager/router/router.dart';
 
+import '../../../generated/l10n.dart';
 import '../../../theme/theme.dart';
 
 @RoutePage()
@@ -17,7 +18,7 @@ class SignUpScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text("Sign up"),
+          title: Text(S.of(context).signUp),
         ),
         body: Center(
             child: Column(
@@ -26,14 +27,14 @@ class SignUpScreen extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 40),
                 child: TextFormField(
-                  decoration: const InputDecoration(labelText: "Name"),
+                  decoration: InputDecoration(labelText: S.of(context).name),
                   keyboardType: TextInputType.text,
                 ),
               ),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 40),
                 child: TextFormField(
-                  decoration: const InputDecoration(labelText: "Email"),
+                  decoration: InputDecoration(labelText: S.of(context).email),
                   keyboardType: TextInputType.emailAddress,
                   onChanged: (value) {
                     login = value;
@@ -43,7 +44,7 @@ class SignUpScreen extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 40),
                 child: TextFormField(
-                  decoration: const InputDecoration(labelText: "Password"),
+                  decoration: InputDecoration(labelText: S.of(context).password),
                   obscureText: true,
                   onChanged: (value) {
                     password = value;
@@ -61,7 +62,7 @@ class SignUpScreen extends StatelessWidget {
                     color: mainTheme.primaryColor,
                     minWidth: 200,
                     child: Text(
-                      "Sign up",
+                      S.of(context).signUp,
                       style: mainTheme.textTheme.labelMedium,
                     ),
                   ),
