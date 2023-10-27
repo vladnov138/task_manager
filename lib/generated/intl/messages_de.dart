@@ -23,6 +23,7 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "add": MessageLookupByLibrary.simpleMessage("hinzufügen"),
+        "all": MessageLookupByLibrary.simpleMessage("All"),
         "analytics": MessageLookupByLibrary.simpleMessage("Analytik"),
         "cannotBeEmpty":
             MessageLookupByLibrary.simpleMessage("Kann nicht leer sein"),
@@ -30,6 +31,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "completed": MessageLookupByLibrary.simpleMessage("Completed"),
         "deadline": MessageLookupByLibrary.simpleMessage("Deadline"),
         "details": MessageLookupByLibrary.simpleMessage("Einzelheiten"),
+        "download": MessageLookupByLibrary.simpleMessage("download"),
         "email": MessageLookupByLibrary.simpleMessage("Email"),
         "forgotPassword":
             MessageLookupByLibrary.simpleMessage("Passwort vergessen?"),
@@ -40,6 +42,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "name": MessageLookupByLibrary.simpleMessage("Name"),
         "notification": MessageLookupByLibrary.simpleMessage("Benachrichtung"),
         "others": MessageLookupByLibrary.simpleMessage("Anderes"),
+        "overdue": MessageLookupByLibrary.simpleMessage("Overdue"),
         "password": MessageLookupByLibrary.simpleMessage("Passwort"),
         "plans": MessageLookupByLibrary.simpleMessage("Pläne"),
         "rest": MessageLookupByLibrary.simpleMessage("Erholung"),
@@ -52,6 +55,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "signUp": MessageLookupByLibrary.simpleMessage("Anmelden"),
         "study": MessageLookupByLibrary.simpleMessage("Studium"),
         "submit": MessageLookupByLibrary.simpleMessage("Einreichen"),
+        "synchronize": MessageLookupByLibrary.simpleMessage("Synchronize"),
         "task": MessageLookupByLibrary.simpleMessage("Aufgabe"),
         "taskTitle": MessageLookupByLibrary.simpleMessage("Aufgabentitel"),
         "tasks": MessageLookupByLibrary.simpleMessage("Aufgaben"),

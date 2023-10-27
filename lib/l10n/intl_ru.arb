@@ -29,5 +29,9 @@
   "todoListIsEmpty": "Пока еще нет задач",
   "tasks": "Задачи",
   "completed": "Completed",
-  "save": "Save"
+  "save": "Save",
+  "synchronize": "Synchronize",
+  "all": "All",
+  "overdue": "Overdue",
+  "download": "download"
 }

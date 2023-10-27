@@ -23,6 +23,7 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "add": MessageLookupByLibrary.simpleMessage("Добавить"),
+        "all": MessageLookupByLibrary.simpleMessage("All"),
         "analytics": MessageLookupByLibrary.simpleMessage("Аналитика"),
         "cannotBeEmpty":
             MessageLookupByLibrary.simpleMessage("Не может быть пустым"),
@@ -30,6 +31,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "completed": MessageLookupByLibrary.simpleMessage("Completed"),
         "deadline": MessageLookupByLibrary.simpleMessage("Дедлайн"),
         "details": MessageLookupByLibrary.simpleMessage("Детали"),
+        "download": MessageLookupByLibrary.simpleMessage("download"),
         "email": MessageLookupByLibrary.simpleMessage("Почта"),
         "forgotPassword": MessageLookupByLibrary.simpleMessage("Забыл пароль"),
         "guestType": MessageLookupByLibrary.simpleMessage("Гостевой режим"),
@@ -39,6 +41,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "name": MessageLookupByLibrary.simpleMessage("Имя"),
         "notification": MessageLookupByLibrary.simpleMessage("Напоминание"),
         "others": MessageLookupByLibrary.simpleMessage("Прочее"),
+        "overdue": MessageLookupByLibrary.simpleMessage("Overdue"),
         "password": MessageLookupByLibrary.simpleMessage("Пароль"),
         "plans": MessageLookupByLibrary.simpleMessage("Планы"),
         "rest": MessageLookupByLibrary.simpleMessage("Отдых"),
@@ -51,6 +54,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "signUp": MessageLookupByLibrary.simpleMessage("Зарегистрироваться"),
         "study": MessageLookupByLibrary.simpleMessage("Учеба"),
         "submit": MessageLookupByLibrary.simpleMessage("Авторизоваться"),
+        "synchronize": MessageLookupByLibrary.simpleMessage("Synchronize"),
         "task": MessageLookupByLibrary.simpleMessage("Задача"),
         "taskTitle": MessageLookupByLibrary.simpleMessage("Заголовок задачи"),
         "tasks": MessageLookupByLibrary.simpleMessage("Задачи"),

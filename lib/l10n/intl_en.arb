@@ -29,5 +29,9 @@
   "todoListIsEmpty": "Todo list is empty",
   "tasks": "Tasks",
   "completed": "Completed",
-  "save": "Save"
+  "save": "Save",
+  "synchronize": "Synchronize",
+  "all": "All",
+  "overdue": "Overdue",
+  "download": "download"
 }
