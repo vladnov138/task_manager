@@ -27,6 +27,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "cannotBeEmpty":
             MessageLookupByLibrary.simpleMessage("Не может быть пустым"),
         "category": MessageLookupByLibrary.simpleMessage("Категория"),
+        "completed": MessageLookupByLibrary.simpleMessage("Completed"),
         "deadline": MessageLookupByLibrary.simpleMessage("Дедлайн"),
         "details": MessageLookupByLibrary.simpleMessage("Детали"),
         "email": MessageLookupByLibrary.simpleMessage("Почта"),
@@ -41,6 +42,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "password": MessageLookupByLibrary.simpleMessage("Пароль"),
         "plans": MessageLookupByLibrary.simpleMessage("Планы"),
         "rest": MessageLookupByLibrary.simpleMessage("Отдых"),
+        "save": MessageLookupByLibrary.simpleMessage("Save"),
         "selectDate": MessageLookupByLibrary.simpleMessage("Выберите дату"),
         "selectNotificationDate":
             MessageLookupByLibrary.simpleMessage("Выберите дату напоминания"),

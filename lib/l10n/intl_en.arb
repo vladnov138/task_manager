@@ -27,5 +27,7 @@
   "settings": "Settings",
   "logOut": "Log out",
   "todoListIsEmpty": "Todo list is empty",
-  "tasks": "Tasks"
+  "tasks": "Tasks",
+  "completed": "Completed",
+  "save": "Save"
 }

@@ -27,6 +27,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "cannotBeEmpty":
             MessageLookupByLibrary.simpleMessage("Kann nicht leer sein"),
         "category": MessageLookupByLibrary.simpleMessage("Kategorie"),
+        "completed": MessageLookupByLibrary.simpleMessage("Completed"),
         "deadline": MessageLookupByLibrary.simpleMessage("Deadline"),
         "details": MessageLookupByLibrary.simpleMessage("Einzelheiten"),
         "email": MessageLookupByLibrary.simpleMessage("Email"),
@@ -42,6 +43,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "password": MessageLookupByLibrary.simpleMessage("Passwort"),
         "plans": MessageLookupByLibrary.simpleMessage("Pläne"),
         "rest": MessageLookupByLibrary.simpleMessage("Erholung"),
+        "save": MessageLookupByLibrary.simpleMessage("Save"),
         "selectDate": MessageLookupByLibrary.simpleMessage("Datum auswählen"),
         "selectNotificationDate": MessageLookupByLibrary.simpleMessage(
             "Benachrichtungsdatum auswählen"),

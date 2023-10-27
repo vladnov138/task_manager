@@ -27,5 +27,7 @@
   "settings": "Настройки",
   "logOut": "Выйти",
   "todoListIsEmpty": "Пока еще нет задач",
-  "tasks": "Задачи"
+  "tasks": "Задачи",
+  "completed": "Completed",
+  "save": "Save"
 }
