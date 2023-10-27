@@ -1,6 +1,8 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:task_manager/repository/abstract_repository.dart';
 import 'package:task_manager/router/router.dart';
 
 import '../../../generated/l10n.dart';
@@ -22,6 +24,9 @@ class _SignInScreenState extends State<SignInScreen> {
     prefs.setBool('isGuest', true);
   }
 
+  String? login;
+  String? password;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,6 +42,9 @@ class _SignInScreenState extends State<SignInScreen> {
                 child: TextFormField(
                   decoration: InputDecoration(labelText: S.of(context).email),
                   keyboardType: TextInputType.emailAddress,
+                  onChanged: (value) {
+                    login = value;
+                  },
                 ),
               ),
               Container(
@@ -44,6 +52,9 @@ class _SignInScreenState extends State<SignInScreen> {
                 child: TextFormField(
                   decoration: InputDecoration(labelText: S.of(context).password),
                   obscureText: true,
+                  onChanged: (value) {
+                    password = value;
+                  },
                 ),
               ),
               Container(
@@ -51,6 +62,7 @@ class _SignInScreenState extends State<SignInScreen> {
                 child: Column(children: [
                   MaterialButton(
                     onPressed: () {
+                      GetIt.I<AbstractRepository>().signIn(login!, password!);
                       AutoRouter.of(context).navigate(ProfileRoute());
                     },
                     color: mainTheme.primaryColor,
